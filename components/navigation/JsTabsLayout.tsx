@@ -22,7 +22,7 @@ export function JsTabsLayout() {
     >
       <Tabs.Screen name="index" options={{ title: "Home" }} />
       <Tabs.Screen name="workout" options={{ title: "Workout" }} />
-      <Tabs.Screen name="nutrition" options={{ title: "Nutrition" }} />
+      <Tabs.Screen name="nutrition" options={{ title: "Food" }} />
       <Tabs.Screen name="progress" options={{ title: "Progress" }} />
       <Tabs.Screen name="profile" options={{ title: "Profile" }} />
     </Tabs>

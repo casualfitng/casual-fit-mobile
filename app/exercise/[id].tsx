@@ -38,7 +38,8 @@ export default function ExerciseScreen() {
     <Screen label={exercise?.difficulty ?? "Exercise"} title={exercise?.name ?? "Exercise"} body={exercise?.primaryMuscles.join(", ")}>
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ gap: theme.space.md, paddingBottom: 32 }}>
         <View style={demo}>
-          <Text style={demoText}>{exercise?.demoUrl ? "Demonstration" : "Demonstration slot"}</Text>
+          <Text style={demoText}>Demo</Text>
+          <Text style={demoHint}>Video goes here later. Nothing is playing yet.</Text>
         </View>
         <Text style={heading}>How to perform</Text>
         {exercise?.instructions.map((step, index) => (
@@ -69,7 +70,8 @@ const demo = {
   justifyContent: "center" as const,
   minHeight: 160,
 };
-const demoText = { color: theme.color.textMuted, fontSize: theme.type.body };
+const demoText = { color: theme.color.text, fontSize: theme.type.body, fontWeight: "700" as const };
+const demoHint = { color: theme.color.textMuted, fontSize: 14, lineHeight: 20, marginTop: 6, paddingHorizontal: 16, textAlign: "center" as const };
 const heading = { color: theme.color.text, fontSize: theme.type.body, fontWeight: "700" as const, marginTop: theme.space.sm };
 const body = { color: theme.color.textMuted, fontSize: theme.type.body, lineHeight: 24 };
 const link = { color: theme.color.accent, fontSize: theme.type.body, fontWeight: "600" as const };

@@ -20,7 +20,7 @@ import {
 } from "@/lib/onboarding";
 import { useFocusEffect, useRouter } from "expo-router";
 import { useCallback, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 
 type SavedProfile = {
   name: string | null;
@@ -81,15 +81,25 @@ export default function ProfileScreen() {
   const router = useRouter();
   const t = useAppTheme();
   const [profile, setProfile] = useState<SavedProfile | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useFocusEffect(
     useCallback(() => {
       let active = true;
+      setLoading(true);
       api<SavedProfile>("/profile")
         .then((next) => {
-          if (active) setProfile(next);
+          if (!active) return;
+          setProfile(next);
+          setError(null);
         })
-        .catch(() => undefined);
+        .catch(() => {
+          if (active) setError("Profile could not be loaded.");
+        })
+        .finally(() => {
+          if (active) setLoading(false);
+        });
       return () => {
         active = false;
       };
@@ -147,7 +157,7 @@ export default function ProfileScreen() {
     : [];
 
   return (
-    <Screen scroll label="Account" title={displayName} showLogo={false}>
+    <Screen scroll label="Account" title={displayName} body="Body, training days, and food targets." showLogo={false}>
       <GlassCard style={styles.heroCard}>
         <ProfileAvatar
           name={profile?.name}
@@ -168,9 +178,12 @@ export default function ProfileScreen() {
             label="Goal"
             value={profile?.goalWeightKg ? `${profile.goalWeightKg} kg` : "—"}
           />
-          <StatPill label="Calories" value={profile?.calorieTarget ? `${profile.calorieTarget}` : "—"} />
+          <StatPill label="Protein" value={profile?.proteinTargetG ? `${profile.proteinTargetG} g` : "—"} />
         </View>
       </GlassCard>
+
+      {loading && !profile ? <ActivityIndicator color={t.colors.accent} /> : null}
+      {error ? <Text style={{ color: t.colors.error, lineHeight: 22 }}>{error}</Text> : null}
 
       {needsProfile ? (
         <GlassCard>

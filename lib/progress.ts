@@ -16,6 +16,12 @@ export type ProgressSummary = {
     trainingDaysPlanned: number;
     minutesTrained: number;
   };
+  weekDays: {
+    weekday: string;
+    isRest: boolean;
+    completed: boolean;
+    isToday: boolean;
+  }[];
 };
 
 export async function fetchProgressSummary() {
